@@ -48,7 +48,7 @@ jobs:
       run: echo "##[set-output name=project_name;]gcloud config get project"
     
     - name: 'docker tag'
-      run: docker build --tag gcr.io/${{steps.get_project.outputs.project_name}}/busybox
+      run: docker build . --file Dockerfile --tag gcr.io/${{steps.get_project.outputs.project_name}}/busybox
       
     - name: 'docker deploy to gcr'
       run: docker push gcr.io/${{steps.get_project.outputs.project_name}}/busybox

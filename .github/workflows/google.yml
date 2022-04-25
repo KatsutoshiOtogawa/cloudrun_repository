@@ -47,8 +47,12 @@ jobs:
     #   name: 'Use gcloud CLI'
     #   run: echo "##[set-output name=project_name;]gcloud config get project"
     
+    - name: 'configure-docker for gcp'
+      run: gcloud auth configure-docker gcr.io
+
     - name: 'docker tag'
       run: docker build . --file Dockerfile --tag gcr.io/${GCP_PROJECT}/busybox
       
     - name: 'docker deploy to gcr'
       run: docker push gcr.io/${GCP_PROJECT}/busybox
+      # run: docker push gcr.io/${GCP_PROJECT}/busybox

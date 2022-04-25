@@ -40,3 +40,15 @@ jobs:
         workload_identity_provider: 'projects/93898855020/locations/global/workloadIdentityPools/forgithubactionid/providers/githubid'
         service_account: 'compute-engine-for-github@github-for-personal-build.iam.gserviceaccount.com'
 
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v0'
+
+    - id: 'get_project'
+      name: 'Use gcloud CLI'
+      run: echo "##[set-output name=project_name;]gcloud config get project"
+    
+    - name: 'docker tag'
+      run: docker build tag gcr.io/${{steps.get_project.outputs.project_name}}/busybox
+      
+    - name: 'docker deploy to gcr'
+      run: docker push gcr.io/${{steps.get_project.outputs.project_name}}/busybox

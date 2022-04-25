@@ -43,29 +43,16 @@ jobs:
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v0'
 
-    # - id: 'get_project'
-    #   name: 'Use gcloud CLI'
-    #   run: echo "##[set-output name=project_name;]gcloud config get project"
     - name: 'configure-docker for artifact registry'
       run: gcloud auth configure-docker asia-northeast2-docker.pkg.dev
       
-    # - name: 'setup docker-credential-gcr'
-    #   env:
-    #     VERSION: "2.0.0"
-    #     OS: linux
-    #     ARCH: amd64
-    #   run: |
-    #     curl -fsSL "https://github.com/GoogleCloudPlatform/docker-credential-gcr/releases/download/v${VERSION}/docker-credential-gcr_${OS}_${ARCH}-${VERSION}.tar.gz" \
-    #       | tar xz --to-stdout ./docker-credential-gcr \
-    #       > /usr/bin/docker-credential-gcr
-    # - name: 'set permission'
-    #   run: chmod +x /usr/bin/docker-credential-gcr
-    # - name: ''
-    #   run: docker-credential-gcr configure-docker --registries=asia-northeast2-docker.pkg.dev
-
-    - name: 'docker tag'
-      run: docker build . --file Dockerfile --tag asia-northeast2-docker.pkg.dev/${GCP_PROJECT}/testimage/busybox
+    - name: 'docker build'
+      run: |
+        branch_name=$(echo ${{github.ref}} | rev | cut -d / -f 1 | rev)
+        docker build . --file Dockerfile --tag "asia-northeast2-docker.pkg.dev/${GCP_PROJECT}/testimage/busybox:${branch_name}"
       
     - name: 'docker deploy to artifact registry'
-      run: docker push asia-northeast2-docker.pkg.dev/${GCP_PROJECT}/testimage/busybox
+      run: |
+        branch_name=$(echo ${{github.ref}} | rev | cut -d / -f 1 | rev)
+        docker push "asia-northeast2-docker.pkg.dev/${GCP_PROJECT}/testimage/busybox:${branch_name}"
       # run: docker push gcr.io/${GCP_PROJECT}/busybox

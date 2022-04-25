@@ -64,8 +64,8 @@ jobs:
     #   run: docker-credential-gcr configure-docker --registries=asia-northeast2-docker.pkg.dev
 
     - name: 'docker tag'
-      run: docker build . --file Dockerfile --tag asia-northeast2-docker.pkg.dev/${GCP_PROJECT}/busybox
+      run: docker build . --file Dockerfile --tag asia-northeast2-docker.pkg.dev/${GCP_PROJECT}/testimage/busybox
       
     - name: 'docker deploy to artifact registry'
-      run: docker push asia-northeast2-docker.pkg.dev/${GCP_PROJECT}/busybox
+      run: docker push asia-northeast2-docker.pkg.dev/${GCP_PROJECT}/testimage/busybox
       # run: docker push gcr.io/${GCP_PROJECT}/busybox

@@ -48,11 +48,11 @@ jobs:
     #   run: echo "##[set-output name=project_name;]gcloud config get project"
     
     - name: 'configure-docker for gcp'
-      run: gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+      run: gcloud auth configure-docker asia-northeast2-docker.pkg.dev
 
     - name: 'docker tag'
-      run: docker build . --file Dockerfile --tag asia-northeast1-docker.pkg.dev/${GCP_PROJECT}/busybox
+      run: docker build . --file Dockerfile --tag asia-northeast2-docker.pkg.dev/${GCP_PROJECT}/busybox
       
     - name: 'docker deploy to gcr'
-      run: docker push asia-northeast1-docker.pkg.dev/${GCP_PROJECT}/busybox
+      run: docker push asia-northeast2-docker.pkg.dev/${GCP_PROJECT}/busybox
       # run: docker push gcr.io/${GCP_PROJECT}/busybox
